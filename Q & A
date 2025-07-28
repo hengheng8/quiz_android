@@ -1,0 +1,73 @@
+1 What are the main differences between val and var in Kotlin?
+-> val (value) is used to declare read-only (immutable) references. Once a value is assigned to a val, the reference cannot be changed. 
+        However, if the object it refers to is mutable (like a list), its contents can still be modified.
+->   var (variable) is used to declare mutable references. This means the variable can be reassigned to a different value or object after its initial assignment.
+
+2  How do you handle null safety in Kotlin? Explain with examples.
+-> Kotlin offers robust built-in null safety mechanisms designed to minimize the risk of runtime NullPointerException (NPE). 
+  These mechanisms include the safe call operator (?.), the Elvis operator (?:), explicit null checks, and other language features that promote safer and more predictable code when working with potentially nullable values.
+-> fun main() {
+    var name: String? = null
+    println(name?.length) 
+    val length = name?.length ?: 0
+    println(length) // Output: 0
+    name = "Hello"
+    name?.let {
+        println(it.length) // Output: 5
+    }
+    val anyValue: Any = "Kotlin"
+    val stringValue: String? = anyValue as? String
+    println(stringValue) 
+}
+
+3 What are Kotlin coroutines, and how do they differ from Java threads?
+-> Kotlin coroutines provide a lightweight and efficient framework for managing asynchronous tasks without blocking the main thread. 
+  They are simpler and more performant than traditional Java threads, offering built-in support for Android lifecycle management, robust error handling, and seamless integration with libraries like Room and Retrofit.
+
+Section II: Jetpack Compose
+
+1 What is Jetpack Compose, and how does it differ from the traditional View system in Android?
+-> Jetpack Compose is a modern declarative UI toolkit for Android that enables building user interfaces entirely in Kotlin without using XML layouts. 
+  Unlike the traditional View system, which is imperative and XML-based, Compose simplifies UI development by leveraging Kotlin’s expressive syntax, improving code readability, maintainability, and enabling faster development.
+
+2 How do you manage state in Jetpack Compose? Explain with examples.
+-> State management in Jetpack Compose is primarily handled using MutableState along with the remember API, 
+which enables efficient and reactive UI updates by preserving state across recompositions. This approach ensures that the UI remains consistent with the underlying data model without manual intervention.
+var name by remember { mutableStateOf("") }
+
+TextField(
+    value = name,
+    onValueChange = { newValue -> name = newValue }
+)
+
+3 What is the remember keyword in Jetpack Compose, and how is it used?
+-> The remember function in Jetpack Compose is a key state management tool that preserves the value of a variable across recompositions, 
+preventing unnecessary reinitialization. It scopes the state to the composable lifecycle, ensuring that the UI maintains consistency and improves performance by avoiding redundant computations.
+
+var number by remember { mutableStateOf(0) }
+Text(text = "Number = $number")
+
+4 How can you implement navigation in a Jetpack Compose application?
+-> In Jetpack Compose, navigation is managed using the official Navigation Compose library, 
+which provides a declarative and type-safe approach to handling navigation and back stack management. Similar to web routing, each screen (composable) is assigned a unique route, enabling seamless transitions.
+
+@Composable
+fun AppNavigation() {
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = "home"
+    ) {
+        composable("home") { HomeScreen() }
+        composable("about") { AboutScreen() }
+    }
+    Button(
+        onClick = { navController.navigate("about") },
+        modifier = Modifier.padding(16.dp)
+    ) {
+        Text(text = "Go to About")
+    }
+}
+
+
+
